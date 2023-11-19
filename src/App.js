@@ -24,19 +24,26 @@ const MyBook = () => {
   const [bookData, setBookData] = useState();
 
   useEffect(() => {
-    fetch('/api/v1/books/1')
-      .then(response => response.json())
-      .then(bookData => setBookData(bookData));
+    const fecthBookData = async () => {
+      try {
+        const response = await fetch('/api/v1/books/1');
+        const data = await response.json();
+        setBookData(data);
+      } catch(err) {
+        console.log(err);
+      }
+    }
+    fecthBookData();
   }, []);
 
   return (
     <div>
-      {bookData && <h2>{bookData[0].name}</h2>}
+      {!bookData ? "Loading..." : <h2>{bookData[0].name}</h2>}
     </div>
   );
 };
 
-export default function MyApp() {
+export default () => {
   return (
     <div>
     <h1>First Button</h1>
